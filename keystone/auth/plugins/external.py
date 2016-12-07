@@ -21,12 +21,13 @@ import six
 
 from keystone import auth
 from keystone.common import dependency
+from keystone.common import driver_hints
+from keystone.openstack.common import log
 from keystone import exception
 from keystone.i18n import _
 
 
 CONF = cfg.CONF
-
 
 @six.add_metaclass(abc.ABCMeta)
 class Base(auth.AuthMethodHandler):
@@ -90,6 +91,34 @@ class Domain(Base):
         user_ref = self.identity_api.get_user_by_name(username, domain_id)
         return user_ref
 
+@dependency.requires('assignment_api', 'identity_api')
+class InferredDomain(Base):
+    def _authenticate(self, remote_user, context):
+        if remote_user is None:
+            return {}
+
+        email = self.__extract_email(remote_user)
+        hints = driver_hints.Hints()
+        hints.add_filter('name', email)
+        users = self.identity_api.list_users(hints=hints)
+
+        if len(users) == 1:
+            return users[0]
+        elif len(users) > 1:
+            raise exception.Unauthorized(
+                _("Multiple users found with the same username"))
+        else:
+            return {}
+
+    def __extract_email(self, remote_user):
+        if remote_user is None:
+            return None
+        user_bits = remote_user.split('@')
+        if len(user_bits) == 3:
+            return '%s@%s' % (user_bits[0], user_bits[1])
+        else:
+            raise exception.Unauthorized(
+                _('Invalid REMOTE_USER Format: %s' % remote_user))
 
 class KerberosDomain(Domain):
     """Allows `kerberos` as a method."""

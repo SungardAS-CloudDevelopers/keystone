@@ -545,9 +545,14 @@ FILE_OPTIONS = {
                              'token, the origin host must be a member of the '
                              'trusted_dashboard list. This configuration '
                              'option may be repeated for multiple values. '
+##<<<<<<< HEAD
                              'For example: '
                              'trusted_dashboard=http://acme.com/auth/websso '
                              'trusted_dashboard=http://beta.com/auth/websso'),
+##=======
+##                             'For example: trusted_dashboard=http://acme.com '
+##                             'trusted_dashboard=http://beta.com'),
+##>>>>>>> 1b50d26... * add a new auth mechanism called InferredDomain that will load
         cfg.StrOpt('sso_callback_template', default=_SSO_CALLBACK,
                    help='Location of Single Sign-On callback handler, will '
                         'return a token to a trusted dashboard host.'),

@@ -35,3 +35,11 @@ keystone/locale/*/LC_MESSAGES/*.mo
 releasenotes/build
 # sample config included in docs
 doc/source/_static/keystone.conf.sample
+.idea/.name
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/scopes/scope_settings.xml
+.idea/src.iml
+.idea/vcs.xml
+.idea/workspace.xml
