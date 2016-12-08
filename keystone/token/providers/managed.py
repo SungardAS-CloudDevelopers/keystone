@@ -20,7 +20,7 @@ class Provider(uuid.Provider):
 
 class V3ManagedTokenDataHelper(common.V3TokenDataHelper):
     def _get_filtered_project(self, project_id):
-        project_ref = self.assignment_api.get_project(project_id)
+        project_ref = self.resource_api.get_project(project_id)
         filtered_project = {
             'id': project_ref['id'],
             'name': project_ref['name'],
