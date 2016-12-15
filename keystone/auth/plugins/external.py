@@ -22,7 +22,6 @@ import six
 from keystone import auth
 from keystone.common import dependency
 from keystone.common import driver_hints
-from keystone.openstack.common import log
 from keystone import exception
 from keystone.i18n import _
 
